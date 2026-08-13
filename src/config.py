@@ -117,9 +117,23 @@ IMAGE_TASKS = {
         "source": "Brain Tumour Classification MRI dataset",
         "blurb": "Four-way classification of brain MRI slices.",
     },
+    "pneumonia": {
+        "name": "Pneumonia (Chest X-ray)",
+        "icon": "🫁",
+        "dir": IMAGES_DIR / "pneumonia",
+        "train_subdir": "train",
+        "test_subdir": "test",
+        "classes": ["NORMAL", "PNEUMONIA"],
+        "pretty_classes": ["Normal", "Pneumonia"],
+        "img_size": 224,
+        "source": "Kermany paediatric chest X-ray dataset",
+        "blurb": "Binary classification of chest radiographs. The classes are "
+                 "3:1 imbalanced, so always answering 'pneumonia' scores 74% — "
+                 "the models are weighted against that baseline, not against 50%.",
+    },
     "covid_xray": {
         "name": "COVID-19 (Chest X-ray)",
-        "icon": "🫁",
+        "icon": "🦠",
         "dir": IMAGES_DIR / "covid_xray",
         "train_subdir": "train",
         "test_subdir": "test",

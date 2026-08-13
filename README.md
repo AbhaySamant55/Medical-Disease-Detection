@@ -1,9 +1,12 @@
 # 🩺 Medical Disease Detection System
 
-A multi-disease screening system covering **8 conditions**. Every tabular
-condition is run through **10 different machine-learning algorithms**, and the
-final verdict is a soft vote in which each algorithm's opinion is weighted by
-how good that algorithm actually is.
+A multi-disease screening system covering **9 conditions — 6 from clinical data
+and 3 from medical images**. Every condition is run through **10 different
+machine-learning algorithms**, and the final verdict is a soft vote in which
+each algorithm's opinion is weighted by how good that algorithm actually is.
+
+Images go through the same ten algorithms: a fine-tuned CNN turns the scan into
+an embedding, and the ten classifiers vote on that.
 
 > ⚠️ **Not a medical device.** A student project on small public research
 > datasets. It cannot diagnose anyone and must never be used to.
@@ -20,8 +23,9 @@ how good that algorithm actually is.
 | 4 | Parkinson's Disease | UCI (voice measures) | 195 | 10-model ensemble |
 | 5 | Liver Disease | Indian Liver Patient (UCI) | 583 | 10-model ensemble |
 | 6 | Chronic Kidney Disease | UCI CKD | 399 | 10-model ensemble |
-| 7 | Brain Tumour | MRI, 4 classes | 3,264 images | CNN (transfer learning) |
-| 8 | COVID-19 / Pneumonia | Chest X-ray | 2,284 / Kaggle | CNN (transfer learning) |
+| 7 | Brain Tumour | MRI, 4 classes | 3,264 images | CNN embedding + 10-model ensemble |
+| 8 | Pneumonia | Chest X-ray | 5,863 images | CNN embedding + 10-model ensemble |
+| 9 | COVID-19 | Chest X-ray | 2,284 images | CNN embedding + 10-model ensemble |
 
 ---
 
@@ -183,25 +187,60 @@ or browse the complete performance dashboard.
 
 ---
 
-## Imaging models (Kaggle GPU)
+## Imaging: the same 10 algorithms, on scans
 
-The CNNs use MobileNetV2 transfer learning — a frozen ImageNet backbone first,
-then fine-tuning the top layers at a low learning rate. On a few thousand
-medical images that beats training from scratch, because the early edge and
-texture filters transfer even though ImageNet contains no MRIs.
+**Brain tumour MRI and chest X-ray pneumonia are detected by the same ten-model
+weighted ensemble as the clinical data** — not by a single CNN.
 
-| Task | Notebook | Dataset to attach on Kaggle |
+The ten classifiers cannot read pixels, so a CNN converts each scan into a
+vector first:
+
+```
+scan -> fine-tuned EfficientNetB0 -> 1280-d embedding -> PCA 128
+     -> 10 classifiers -> accuracy-weighted vote -> verdict
+```
+
+The backbone is **fine-tuned on the medical images before extracting features**,
+not left frozen. Frozen ImageNet features are tuned for cats and cars; a few
+epochs of fine-tuning moves them toward tissue texture and hands the ten heads a
+far more separable space.
+
+That the CNN step is doing real work is measurable. Running the identical ten
+algorithms on **raw 64×64 pixels instead of CNN embeddings** gives, on the brain
+MRI test set:
+
+| Features | Ensemble accuracy | Glioma recall |
 |---|---|---|
-| Brain tumour, 4-class MRI | `notebooks/kaggle_brain_tumor_cnn.ipynb` | `sartajbhuvaji/brain-tumor-classification-mri` |
-| Pneumonia, chest X-ray | `notebooks/kaggle_pneumonia_cnn.ipynb` | `paultimothymooney/chest-xray-pneumonia` |
-| COVID-19, chest X-ray | — | trains locally, see below |
+| Raw pixels (no CNN) | 0.7234 | 0.2000 |
+| CNN embedding | — run the notebook | — |
 
-1. open the notebook on [kaggle.com/code](https://www.kaggle.com/code)
-2. **Add Input** → search and attach the dataset above
-3. **Settings → Accelerator → GPU T4 x2** → Run All
-4. download the `.keras` file from the output panel into `models/image/`
+Raw pixels essentially cannot find gliomas. Whatever the embedding version
+scores, that 0.7234 is the floor it has to clear, and the gap is the CNN's
+contribution. The weighting behaves the same way it does on tabular data — even
+on raw pixels the ensemble beat the CV-selected single model by **+0.0152**.
 
-The app picks the models up automatically once they are in place.
+### Training them
+
+One notebook does both tasks. Attach either dataset or both:
+
+| Notebook | Datasets to attach on Kaggle |
+|---|---|
+| **`notebooks/kaggle_image_10_models.ipynb`** | `sartajbhuvaji/brain-tumor-classification-mri` and/or `paultimothymooney/chest-xray-pneumonia` |
+
+1. open on [kaggle.com/code](https://www.kaggle.com/code) → **File → Import Notebook**
+2. **Add Input** → attach one or both datasets (paths are auto-discovered)
+3. **Settings → Accelerator → GPU T4 x2** → **Run All** (~10 min per dataset)
+4. download into `models/image/`:
+   - `brain_tumor_backbone.keras` + `brain_tumor_heads.joblib`
+   - `pneumonia_backbone.keras` + `pneumonia_heads.joblib`
+
+The app picks them up automatically and shows the full 10-algorithm breakdown
+for an uploaded scan, exactly as it does for the clinical data.
+
+Two single-CNN notebooks (`kaggle_brain_tumor_cnn.ipynb`,
+`kaggle_pneumonia_cnn.ipynb`) are also included as the simpler baseline; the
+10-model notebook reports a plain fine-tuned CNN score alongside the ensemble so
+the two are directly comparable.
 
 The pneumonia notebook handles two traps in that dataset that are easy to miss:
 its official validation split contains only **16 images** (so a proper one is

@@ -46,21 +46,21 @@ def load_metrics():
 
 
 @st.cache_resource
-def load_image_model(task_key: str):
-    path = config.IMAGE_MODEL_PATH / f"{task_key}.keras"
-    if not path.exists():
-        return None
+def load_image_ensemble(task_key: str):
+    """Returns (ensemble, error_message)."""
+    from src.image_ensemble import ImageEnsemble, is_available
+    if not is_available(task_key):
+        return None, "missing"
     try:
-        import tensorflow as tf
-        return tf.keras.models.load_model(path)
-    except Exception:
-        return None
+        return ImageEnsemble.load(task_key), None
+    except Exception as exc:
+        return None, f"{exc.__class__.__name__}: {exc}"
 
 
 # ------------------------------------------------------------------ sidebar
 st.sidebar.title("🩺 Disease Detection")
 mode = st.sidebar.radio("Mode", ["Clinical data (10-model ensemble)",
-                                 "Medical imaging (CNN)",
+                                 "Medical imaging (10-model ensemble)",
                                  "Model performance"])
 st.sidebar.divider()
 
@@ -181,7 +181,7 @@ if mode == "Clinical data (10-model ensemble)":
 
 
 # ==================================================================== IMAGE
-elif mode == "Medical imaging (CNN)":
+elif mode == "Medical imaging (10-model ensemble)":
     task_key = st.sidebar.selectbox(
         "Scan type", list(config.IMAGE_TASKS),
         format_func=lambda k: f"{config.IMAGE_TASKS[k]['icon']} {config.IMAGE_TASKS[k]['name']}")
@@ -189,38 +189,85 @@ elif mode == "Medical imaging (CNN)":
 
     st.title(f"{task['icon']} {task['name']}")
     st.caption(task["blurb"])
+    st.caption(
+        "A fine-tuned EfficientNetB0 turns the scan into a 1280-dimensional "
+        "embedding, then the **same ten algorithms** used for the clinical data "
+        "vote on it, weighted by their cross-validated accuracy."
+    )
 
-    model = load_image_model(task_key)
-    if model is None:
-        st.warning(
-            f"No trained CNN found at `models/image/{task_key}.keras`.\n\n"
-            "Train it on Kaggle with the notebook in `notebooks/`, download the "
-            "`.keras` file from the notebook output, and drop it into "
-            "`models/image/`."
-        )
+    ens, err = load_image_ensemble(task_key)
+    if ens is None:
+        if err == "missing":
+            st.warning(
+                f"No trained models found for **{task['name']}**.\n\n"
+                f"Expected `models/image/{task_key}_backbone.keras` and "
+                f"`models/image/{task_key}_heads.joblib`.\n\n"
+                "Train them on a Kaggle GPU with "
+                "`notebooks/kaggle_image_10_models.ipynb`, then download both "
+                "files from the notebook's Output panel into `models/image/`."
+            )
+        else:
+            st.error(f"Could not load the image models.\n\n`{err}`")
+            st.info(
+                "TensorFlow needs `protobuf>=5.28` while mediapipe pins "
+                "`protobuf<5`. Install TensorFlow in its own virtual "
+                "environment to run the imaging models."
+            )
         st.stop()
+
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Algorithms", len(ens.members))
+    c2.metric("Classes", len(ens.classes))
+    c3.metric("Backbone", ens.backbone_name)
 
     up = st.file_uploader("Upload a scan", type=["jpg", "jpeg", "png"])
     if up is not None:
         from PIL import Image
         img = Image.open(up).convert("RGB")
-        size = task["img_size"]
+
+        with st.spinner("Embedding the scan and polling 10 algorithms ..."):
+            probs, detail = ens.analyse(img)
+
+        top = int(np.argmax(probs))
+        verdict = ens.classes[top]
+        votes = detail["Vote"].value_counts()
 
         left, right = st.columns([2, 3])
         with left:
             st.image(img, caption="Uploaded scan", use_container_width=True)
 
-        arr = np.asarray(img.resize((size, size)), dtype=np.float32) / 255.0
-        probs = model.predict(arr[None, ...], verbose=0)[0]
-        names = task["pretty_classes"]
-        top = int(np.argmax(probs))
-
         with right:
-            st.subheader("Prediction")
-            st.success(f"### {names[top]}")
-            st.metric("Confidence", f"{probs[top]:.1%}")
-            st.bar_chart(pd.DataFrame({"class": names, "probability": probs})
-                         .set_index("class"), height=280)
+            st.subheader("Final weighted verdict")
+            healthy = any(w in verdict.lower() for w in ("no_tumor", "no tumour",
+                                                         "normal", "healthy"))
+            (st.success if healthy else st.error)(f"### {verdict}")
+            st.metric("Weighted probability", f"{probs[top]:.1%}")
+            st.progress(float(np.clip(probs[top], 0, 1)))
+            st.metric("Model agreement",
+                      f"{int(votes.get(verdict, 0))}/{len(detail)} agree")
+            st.bar_chart(
+                pd.DataFrame({"class": ens.classes, "probability": probs})
+                .set_index("class"), height=240)
+
+        st.subheader("How each algorithm voted")
+        st.caption(
+            "**Surety %** is that model's confidence in this scan. "
+            "**Accuracy %** is its cross-validated accuracy during training. "
+            "**Weight %** is its share of the final answer."
+        )
+        st.dataframe(
+            detail.style
+                  .format({"Surety %": "{:.1f}", "Accuracy %": "{:.1f}",
+                           "Weight %": "{:.1f}"})
+                  .background_gradient(subset=["Weight %"], cmap="Blues"),
+            use_container_width=True, hide_index=True)
+    else:
+        st.info("Upload a scan to run all ten algorithms on it.")
+        with st.expander("Algorithm weights for this task"):
+            st.dataframe(
+                ens.weights_frame().style.format({
+                    "CV accuracy %": "{:.2f}", "Weight %": "{:.2f}"}),
+                use_container_width=True, hide_index=True)
 
     st.divider()
     st.info(DISCLAIMER)
