@@ -13,6 +13,11 @@ xgboost>=2.0
 joblib>=1.3
 scipy>=1.11
 
+# Kaggle's runtime pickles the trained heads with a dill reference, so loading
+# <task>_heads.joblib fails with ModuleNotFoundError: No module named 'dill'
+# without this. Only needed for the imaging models.
+dill>=0.3.8
+
 # figures
 matplotlib>=3.8
 seaborn>=0.13

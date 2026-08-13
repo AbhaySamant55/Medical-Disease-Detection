@@ -5,7 +5,11 @@ __pycache__/
 .ipynb_checkpoints/
 
 # environments
+# NOTE: .gitignore has no inline comments — a trailing "# ..." becomes part of
+# the pattern and silently matches nothing. Keep comments on their own line.
 .venv/
+# TensorFlow env for the imaging models; see README
+.venv-tf/
 venv/
 env/
 
@@ -14,9 +18,11 @@ env/
 data/images/
 data/_ckd_tmp/
 
-# CNN weights come from the Kaggle notebooks; drop them in here by hand
-models/image/*.keras
-models/image/*.h5
+# Imaging models come from notebooks/kaggle_image_10_models.ipynb and total
+# ~84 MB (a 17 MB backbone and a 25 MB head bundle per task). They are
+# regenerable, so they stay out of the repo like the image datasets do.
+models/image/*
+!models/image/.gitkeep
 
 # OS / editors
 .DS_Store

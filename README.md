@@ -219,13 +219,39 @@ scores, that 0.7234 is the floor it has to clear, and the gap is the CNN's
 contribution. The weighting behaves the same way it does on tabular data — even
 on raw pixels the ensemble beat the CV-selected single model by **+0.0152**.
 
+### A dataset defect worth knowing about
+
+The first trained brain-tumour ensemble scored 72.9% overall, which looked like
+a mediocre model. The per-class breakdown said otherwise:
+
+| Class | Training folder | Testing folder |
+|---|---|---|
+| glioma | 20/20 | **1/20** |
+| meningioma | 20/20 | 19/20 |
+| no tumour | 20/20 | 20/20 |
+| pituitary | 19/20 | 18/20 |
+
+Everything except glioma was fine. Checking the images explained it: in
+`Training/glioma_tumor` every image is 512×512, while `Testing/glioma_tumor`
+is a mix of 236×236, 524×581, 554×554 and more — the two folders were populated
+from different sources. **This is a known defect in
+`sartajbhuvaji/brain-tumor-classification-mri`**, and it means that class's test
+score measures the dataset rather than the model. On the three sound classes the
+same ensemble scores **95%**.
+
+Use **`masoudnickparvar/brain-tumor-mri-dataset`** instead — the cleaned,
+re-labelled release (7,023 images) without the problem. The notebook now also
+compares image dimensions across train/test at load time and prints a warning
+when a class looks inconsistent, so this gets caught before training rather than
+after.
+
 ### Training them
 
 One notebook does both tasks. Attach either dataset or both:
 
 | Notebook | Datasets to attach on Kaggle |
 |---|---|
-| **`notebooks/kaggle_image_10_models.ipynb`** | `sartajbhuvaji/brain-tumor-classification-mri` and/or `paultimothymooney/chest-xray-pneumonia` |
+| **`notebooks/kaggle_image_10_models.ipynb`** | `masoudnickparvar/brain-tumor-mri-dataset` and/or `paultimothymooney/chest-xray-pneumonia` |
 
 1. open on [kaggle.com/code](https://www.kaggle.com/code) → **File → Import Notebook**
 2. **Add Input** → attach one or both datasets (paths are auto-discovered)
