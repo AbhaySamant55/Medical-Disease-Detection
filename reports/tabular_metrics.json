@@ -1,0 +1,1406 @@
+{
+  "diseases": {
+    "diabetes": {
+      "info": {
+        "key": "diabetes",
+        "name": "Diabetes",
+        "n_samples": 768,
+        "n_features": 8,
+        "positive_rate": 0.3489583333333333,
+        "majority_rate": 0.6510416666666667,
+        "missing_cells": 652,
+        "missing_pct": 0.10611979166666667,
+        "source": "Pima Indians Diabetes Database (UCI / NIDDK)",
+        "blurb": "Predicts diabetes in female patients of Pima Indian heritage aged 21+, from routine diagnostic measurements.",
+        "positive_label": "Diabetic",
+        "negative_label": "Not diabetic",
+        "icon": "\ud83e\ude78"
+      },
+      "majority_baseline": 0.6510416666666667,
+      "cv_weights": [
+        {
+          "Algorithm": "Logistic Regression",
+          "Family": "Linear",
+          "CV accuracy %": 78.82736156351791,
+          "ROC-AUC": 0.8440070093457944,
+          "F1": 0.6542553191489362,
+          "Precision": 0.7592592592592593,
+          "Recall": 0.5747663551401869,
+          "Weight %": 12.923076923076923
+        },
+        {
+          "Algorithm": "Extra Trees",
+          "Family": "Bagging",
+          "CV accuracy %": 77.52442996742671,
+          "ROC-AUC": 0.8412266355140188,
+          "F1": 0.625,
+          "Precision": 0.7467532467532467,
+          "Recall": 0.5373831775700935,
+          "Weight %": 11.692307692307692
+        },
+        {
+          "Algorithm": "Random Forest",
+          "Family": "Bagging",
+          "CV accuracy %": 77.0358306188925,
+          "ROC-AUC": 0.8251518691588785,
+          "F1": 0.6430379746835443,
+          "Precision": 0.7016574585635359,
+          "Recall": 0.5934579439252337,
+          "Weight %": 11.23076923076923
+        },
+        {
+          "Algorithm": "Support Vector Machine",
+          "Family": "Kernel",
+          "CV accuracy %": 77.0358306188925,
+          "ROC-AUC": 0.8326401869158877,
+          "F1": 0.6279683377308707,
+          "Precision": 0.7212121212121212,
+          "Recall": 0.5560747663551402,
+          "Weight %": 11.23076923076923
+        },
+        {
+          "Algorithm": "Neural Network (MLP)",
+          "Family": "Neural",
+          "CV accuracy %": 76.71009771986971,
+          "ROC-AUC": 0.8122780373831775,
+          "F1": 0.6537530266343826,
+          "Precision": 0.678391959798995,
+          "Recall": 0.6308411214953271,
+          "Weight %": 10.923076923076923
+        },
+        {
+          "Algorithm": "Gaussian Naive Bayes",
+          "Family": "Probabilistic",
+          "CV accuracy %": 76.2214983713355,
+          "ROC-AUC": 0.8249883177570095,
+          "F1": 0.6368159203980099,
+          "Precision": 0.6808510638297872,
+          "Recall": 0.5981308411214953,
+          "Weight %": 10.461538461538462
+        },
+        {
+          "Algorithm": "K-Nearest Neighbours",
+          "Family": "Instance-based",
+          "CV accuracy %": 76.2214983713355,
+          "ROC-AUC": 0.8161623831775701,
+          "F1": 0.635,
+          "Precision": 0.6827956989247311,
+          "Recall": 0.5934579439252337,
+          "Weight %": 10.461538461538462
+        },
+        {
+          "Algorithm": "Gradient Boosting",
+          "Family": "Boosting",
+          "CV accuracy %": 74.2671009771987,
+          "ROC-AUC": 0.81821261682243,
+          "F1": 0.6089108910891089,
+          "Precision": 0.6473684210526316,
+          "Recall": 0.5747663551401869,
+          "Weight %": 8.615384615384615
+        },
+        {
+          "Algorithm": "XGBoost",
+          "Family": "Boosting",
+          "CV accuracy %": 73.61563517915309,
+          "ROC-AUC": 0.7953504672897196,
+          "F1": 0.6067961165048543,
+          "Precision": 0.6313131313131313,
+          "Recall": 0.5841121495327103,
+          "Weight %": 8.0
+        },
+        {
+          "Algorithm": "Decision Tree",
+          "Family": "Tree",
+          "CV accuracy %": 69.86970684039088,
+          "ROC-AUC": 0.7369275700934579,
+          "F1": 0.5563549160671463,
+          "Precision": 0.5714285714285714,
+          "Recall": 0.5420560747663551,
+          "Weight %": 4.461538461538462
+        }
+      ],
+      "test": {
+        "ensemble": {
+          "accuracy": 0.7337662337662337,
+          "precision": 0.6382978723404256,
+          "recall": 0.5555555555555556,
+          "f1": 0.594059405940594,
+          "roc_auc": 0.8159259259259259
+        },
+        "members": {
+          "Logistic Regression": {
+            "accuracy": 0.7077922077922078,
+            "precision": 0.6,
+            "recall": 0.5,
+            "f1": 0.5454545454545454,
+            "roc_auc": 0.812962962962963
+          },
+          "Gaussian Naive Bayes": {
+            "accuracy": 0.7012987012987013,
+            "precision": 0.5666666666666667,
+            "recall": 0.6296296296296297,
+            "f1": 0.5964912280701754,
+            "roc_auc": 0.7646296296296297
+          },
+          "K-Nearest Neighbours": {
+            "accuracy": 0.7402597402597403,
+            "precision": 0.6346153846153846,
+            "recall": 0.6111111111111112,
+            "f1": 0.6226415094339622,
+            "roc_auc": 0.7968518518518519
+          },
+          "Decision Tree": {
+            "accuracy": 0.7337662337662337,
+            "precision": 0.6756756756756757,
+            "recall": 0.46296296296296297,
+            "f1": 0.5494505494505495,
+            "roc_auc": 0.8253703703703703
+          },
+          "Random Forest": {
+            "accuracy": 0.7467532467532467,
+            "precision": 0.6666666666666666,
+            "recall": 0.5555555555555556,
+            "f1": 0.6060606060606061,
+            "roc_auc": 0.8144444444444444
+          },
+          "Extra Trees": {
+            "accuracy": 0.7532467532467533,
+            "precision": 0.6818181818181818,
+            "recall": 0.5555555555555556,
+            "f1": 0.6122448979591837,
+            "roc_auc": 0.8192592592592594
+          },
+          "Gradient Boosting": {
+            "accuracy": 0.7662337662337663,
+            "precision": 0.6875,
+            "recall": 0.6111111111111112,
+            "f1": 0.6470588235294118,
+            "roc_auc": 0.8296296296296296
+          },
+          "Support Vector Machine": {
+            "accuracy": 0.7402597402597403,
+            "precision": 0.6590909090909091,
+            "recall": 0.5370370370370371,
+            "f1": 0.5918367346938775,
+            "roc_auc": 0.7963888888888889
+          },
+          "Neural Network (MLP)": {
+            "accuracy": 0.7532467532467533,
+            "precision": 0.6666666666666666,
+            "recall": 0.5925925925925926,
+            "f1": 0.6274509803921569,
+            "roc_auc": 0.7998148148148149
+          },
+          "XGBoost": {
+            "accuracy": 0.7597402597402597,
+            "precision": 0.673469387755102,
+            "recall": 0.6111111111111112,
+            "f1": 0.6407766990291263,
+            "roc_auc": 0.8144444444444445
+          }
+        }
+      },
+      "cv_selected_model": {
+        "name": "Logistic Regression",
+        "test_roc_auc": 0.812962962962963
+      },
+      "oracle_best_on_test": {
+        "name": "Gradient Boosting",
+        "roc_auc": 0.8296296296296296
+      },
+      "ensemble_gain_auc": 0.002962962962962945,
+      "confusion_matrix": [
+        [
+          83,
+          17
+        ],
+        [
+          24,
+          30
+        ]
+      ]
+    },
+    "heart": {
+      "info": {
+        "key": "heart",
+        "name": "Heart Disease",
+        "n_samples": 303,
+        "n_features": 13,
+        "positive_rate": 0.45874587458745875,
+        "majority_rate": 0.5412541254125413,
+        "missing_cells": 6,
+        "missing_pct": 0.0015232292460015233,
+        "source": "UCI Cleveland Heart Disease",
+        "blurb": "Detects the presence of angiographic coronary artery disease from clinical and exercise-test measurements.",
+        "positive_label": "Heart disease present",
+        "negative_label": "No heart disease",
+        "icon": "\u2764\ufe0f"
+      },
+      "majority_baseline": 0.5412541254125413,
+      "cv_weights": [
+        {
+          "Algorithm": "Support Vector Machine",
+          "Family": "Kernel",
+          "CV accuracy %": 83.05785123966942,
+          "ROC-AUC": 0.8811292208238772,
+          "F1": 0.8075117370892019,
+          "Precision": 0.8431372549019608,
+          "Recall": 0.7747747747747747,
+          "Weight %": 11.29032258064516
+        },
+        {
+          "Algorithm": "Logistic Regression",
+          "Family": "Linear",
+          "CV accuracy %": 82.64462809917356,
+          "ROC-AUC": 0.891479265525067,
+          "F1": 0.8018867924528302,
+          "Precision": 0.8415841584158416,
+          "Recall": 0.7657657657657657,
+          "Weight %": 11.129032258064516
+        },
+        {
+          "Algorithm": "Gaussian Naive Bayes",
+          "Family": "Probabilistic",
+          "CV accuracy %": 81.81818181818183,
+          "ROC-AUC": 0.8881782545904684,
+          "F1": 0.7962962962962963,
+          "Precision": 0.819047619047619,
+          "Recall": 0.7747747747747747,
+          "Weight %": 10.806451612903228
+        },
+        {
+          "Algorithm": "Random Forest",
+          "Family": "Bagging",
+          "CV accuracy %": 81.40495867768594,
+          "ROC-AUC": 0.8829516539440204,
+          "F1": 0.7887323943661971,
+          "Precision": 0.8235294117647058,
+          "Recall": 0.7567567567567568,
+          "Weight %": 10.645161290322578
+        },
+        {
+          "Algorithm": "Extra Trees",
+          "Family": "Bagging",
+          "CV accuracy %": 81.40495867768594,
+          "ROC-AUC": 0.899456708617014,
+          "F1": 0.7926267281105991,
+          "Precision": 0.8113207547169812,
+          "Recall": 0.7747747747747747,
+          "Weight %": 10.645161290322578
+        },
+        {
+          "Algorithm": "K-Nearest Neighbours",
+          "Family": "Instance-based",
+          "CV accuracy %": 79.75206611570248,
+          "ROC-AUC": 0.8885221098961557,
+          "F1": 0.776255707762557,
+          "Precision": 0.7870370370370371,
+          "Recall": 0.7657657657657657,
+          "Weight %": 10.0
+        },
+        {
+          "Algorithm": "XGBoost",
+          "Family": "Boosting",
+          "CV accuracy %": 78.51239669421489,
+          "ROC-AUC": 0.8564060243449556,
+          "F1": 0.7699115044247787,
+          "Precision": 0.7565217391304347,
+          "Recall": 0.7837837837837838,
+          "Weight %": 9.516129032258066
+        },
+        {
+          "Algorithm": "Gradient Boosting",
+          "Family": "Boosting",
+          "CV accuracy %": 77.68595041322314,
+          "ROC-AUC": 0.8495289182312084,
+          "F1": 0.7545454545454545,
+          "Precision": 0.7614678899082569,
+          "Recall": 0.7477477477477478,
+          "Weight %": 9.193548387096772
+        },
+        {
+          "Algorithm": "Neural Network (MLP)",
+          "Family": "Neural",
+          "CV accuracy %": 77.68595041322314,
+          "ROC-AUC": 0.842514269995186,
+          "F1": 0.7476635514018691,
+          "Precision": 0.7766990291262136,
+          "Recall": 0.7207207207207207,
+          "Weight %": 9.193548387096772
+        },
+        {
+          "Algorithm": "Decision Tree",
+          "Family": "Tree",
+          "CV accuracy %": 73.55371900826447,
+          "ROC-AUC": 0.7964376590330788,
+          "F1": 0.7142857142857143,
+          "Precision": 0.7079646017699115,
+          "Recall": 0.7207207207207207,
+          "Weight %": 7.580645161290322
+        }
+      ],
+      "test": {
+        "ensemble": {
+          "accuracy": 0.8852459016393442,
+          "precision": 0.8387096774193549,
+          "recall": 0.9285714285714286,
+          "f1": 0.8813559322033898,
+          "roc_auc": 0.9491341991341993
+        },
+        "members": {
+          "Logistic Regression": {
+            "accuracy": 0.8688524590163934,
+            "precision": 0.8125,
+            "recall": 0.9285714285714286,
+            "f1": 0.8666666666666667,
+            "roc_auc": 0.9512987012987013
+          },
+          "Gaussian Naive Bayes": {
+            "accuracy": 0.8688524590163934,
+            "precision": 0.7941176470588235,
+            "recall": 0.9642857142857143,
+            "f1": 0.8709677419354839,
+            "roc_auc": 0.9523809523809523
+          },
+          "K-Nearest Neighbours": {
+            "accuracy": 0.9016393442622951,
+            "precision": 0.8235294117647058,
+            "recall": 1.0,
+            "f1": 0.9032258064516129,
+            "roc_auc": 0.9567099567099567
+          },
+          "Decision Tree": {
+            "accuracy": 0.7049180327868853,
+            "precision": 0.6388888888888888,
+            "recall": 0.8214285714285714,
+            "f1": 0.71875,
+            "roc_auc": 0.8522727272727273
+          },
+          "Random Forest": {
+            "accuracy": 0.9180327868852459,
+            "precision": 0.8709677419354839,
+            "recall": 0.9642857142857143,
+            "f1": 0.9152542372881356,
+            "roc_auc": 0.95995670995671
+          },
+          "Extra Trees": {
+            "accuracy": 0.8524590163934426,
+            "precision": 0.7878787878787878,
+            "recall": 0.9285714285714286,
+            "f1": 0.8524590163934426,
+            "roc_auc": 0.9491341991341993
+          },
+          "Gradient Boosting": {
+            "accuracy": 0.8524590163934426,
+            "precision": 0.7878787878787878,
+            "recall": 0.9285714285714286,
+            "f1": 0.8524590163934426,
+            "roc_auc": 0.948051948051948
+          },
+          "Support Vector Machine": {
+            "accuracy": 0.8688524590163934,
+            "precision": 0.8125,
+            "recall": 0.9285714285714286,
+            "f1": 0.8666666666666667,
+            "roc_auc": 0.9437229437229437
+          },
+          "Neural Network (MLP)": {
+            "accuracy": 0.8360655737704918,
+            "precision": 0.8214285714285714,
+            "recall": 0.8214285714285714,
+            "f1": 0.8214285714285714,
+            "roc_auc": 0.9166666666666666
+          },
+          "XGBoost": {
+            "accuracy": 0.8688524590163934,
+            "precision": 0.8125,
+            "recall": 0.9285714285714286,
+            "f1": 0.8666666666666667,
+            "roc_auc": 0.9415584415584416
+          }
+        }
+      },
+      "cv_selected_model": {
+        "name": "Support Vector Machine",
+        "test_roc_auc": 0.9437229437229437
+      },
+      "oracle_best_on_test": {
+        "name": "Random Forest",
+        "roc_auc": 0.95995670995671
+      },
+      "ensemble_gain_auc": 0.005411255411255533,
+      "confusion_matrix": [
+        [
+          28,
+          5
+        ],
+        [
+          2,
+          26
+        ]
+      ]
+    },
+    "breast_cancer": {
+      "info": {
+        "key": "breast_cancer",
+        "name": "Breast Cancer",
+        "n_samples": 569,
+        "n_features": 30,
+        "positive_rate": 0.37258347978910367,
+        "majority_rate": 0.6274165202108963,
+        "missing_cells": 0,
+        "missing_pct": 0.0,
+        "source": "Wisconsin Diagnostic Breast Cancer (WDBC)",
+        "blurb": "Classifies a breast mass as malignant or benign from features computed on a digitised fine-needle aspirate image.",
+        "positive_label": "Malignant",
+        "negative_label": "Benign",
+        "icon": "\ud83c\udf97\ufe0f"
+      },
+      "majority_baseline": 0.6274165202108963,
+      "cv_weights": [
+        {
+          "Algorithm": "Support Vector Machine",
+          "Family": "Kernel",
+          "CV accuracy %": 97.58241758241758,
+          "ROC-AUC": 0.9944891640866874,
+          "F1": 0.9673590504451038,
+          "Precision": 0.9760479041916168,
+          "Recall": 0.9588235294117647,
+          "Weight %": 10.488126649076516
+        },
+        {
+          "Algorithm": "XGBoost",
+          "Family": "Boosting",
+          "CV accuracy %": 97.58241758241758,
+          "ROC-AUC": 0.9933333333333333,
+          "F1": 0.9673590504451038,
+          "Precision": 0.9760479041916168,
+          "Recall": 0.9588235294117647,
+          "Weight %": 10.488126649076516
+        },
+        {
+          "Algorithm": "Logistic Regression",
+          "Family": "Linear",
+          "CV accuracy %": 97.36263736263736,
+          "ROC-AUC": 0.9952734778121776,
+          "F1": 0.9642857142857143,
+          "Precision": 0.9759036144578314,
+          "Recall": 0.9529411764705882,
+          "Weight %": 10.4221635883905
+        },
+        {
+          "Algorithm": "Gradient Boosting",
+          "Family": "Boosting",
+          "CV accuracy %": 96.92307692307692,
+          "ROC-AUC": 0.991124871001032,
+          "F1": 0.9583333333333334,
+          "Precision": 0.9698795180722891,
+          "Recall": 0.9470588235294117,
+          "Weight %": 10.29023746701847
+        },
+        {
+          "Algorithm": "Extra Trees",
+          "Family": "Bagging",
+          "CV accuracy %": 96.7032967032967,
+          "ROC-AUC": 0.9923426212590298,
+          "F1": 0.954954954954955,
+          "Precision": 0.9754601226993865,
+          "Recall": 0.9352941176470588,
+          "Weight %": 10.224274406332453
+        },
+        {
+          "Algorithm": "K-Nearest Neighbours",
+          "Family": "Instance-based",
+          "CV accuracy %": 96.48351648351648,
+          "ROC-AUC": 0.9863673890608875,
+          "F1": 0.9512195121951219,
+          "Precision": 0.9873417721518988,
+          "Recall": 0.9176470588235294,
+          "Weight %": 10.158311345646439
+        },
+        {
+          "Algorithm": "Random Forest",
+          "Family": "Bagging",
+          "CV accuracy %": 96.04395604395604,
+          "ROC-AUC": 0.9875748194014449,
+          "F1": 0.9464285714285714,
+          "Precision": 0.9578313253012049,
+          "Recall": 0.9352941176470588,
+          "Weight %": 10.026385224274408
+        },
+        {
+          "Algorithm": "Neural Network (MLP)",
+          "Family": "Neural",
+          "CV accuracy %": 94.5054945054945,
+          "ROC-AUC": 0.9824148606811145,
+          "F1": 0.9266862170087976,
+          "Precision": 0.9239766081871345,
+          "Recall": 0.9294117647058824,
+          "Weight %": 9.564643799472295
+        },
+        {
+          "Algorithm": "Gaussian Naive Bayes",
+          "Family": "Probabilistic",
+          "CV accuracy %": 93.84615384615384,
+          "ROC-AUC": 0.9875954592363261,
+          "F1": 0.9171597633136095,
+          "Precision": 0.9226190476190477,
+          "Recall": 0.9117647058823529,
+          "Weight %": 9.366754617414248
+        },
+        {
+          "Algorithm": "Decision Tree",
+          "Family": "Tree",
+          "CV accuracy %": 92.52747252747253,
+          "ROC-AUC": 0.9514654282765738,
+          "F1": 0.8982035928143712,
+          "Precision": 0.9146341463414634,
+          "Recall": 0.8823529411764706,
+          "Weight %": 8.970976253298154
+        }
+      ],
+      "test": {
+        "ensemble": {
+          "accuracy": 0.956140350877193,
+          "precision": 1.0,
+          "recall": 0.8809523809523809,
+          "f1": 0.9367088607594937,
+          "roc_auc": 0.9983465608465609
+        },
+        "members": {
+          "Logistic Regression": {
+            "accuracy": 0.9649122807017544,
+            "precision": 0.975,
+            "recall": 0.9285714285714286,
+            "f1": 0.9512195121951219,
+            "roc_auc": 0.996031746031746
+          },
+          "Gaussian Naive Bayes": {
+            "accuracy": 0.9210526315789473,
+            "precision": 0.9230769230769231,
+            "recall": 0.8571428571428571,
+            "f1": 0.8888888888888888,
+            "roc_auc": 0.9890873015873015
+          },
+          "K-Nearest Neighbours": {
+            "accuracy": 0.9473684210526315,
+            "precision": 0.9736842105263158,
+            "recall": 0.8809523809523809,
+            "f1": 0.925,
+            "roc_auc": 0.9834656084656086
+          },
+          "Decision Tree": {
+            "accuracy": 0.9035087719298246,
+            "precision": 0.918918918918919,
+            "recall": 0.8095238095238095,
+            "f1": 0.8607594936708861,
+            "roc_auc": 0.9341931216931217
+          },
+          "Random Forest": {
+            "accuracy": 0.9736842105263158,
+            "precision": 1.0,
+            "recall": 0.9285714285714286,
+            "f1": 0.9629629629629629,
+            "roc_auc": 0.9950396825396826
+          },
+          "Extra Trees": {
+            "accuracy": 0.9649122807017544,
+            "precision": 1.0,
+            "recall": 0.9047619047619048,
+            "f1": 0.95,
+            "roc_auc": 0.9990079365079365
+          },
+          "Gradient Boosting": {
+            "accuracy": 0.9649122807017544,
+            "precision": 1.0,
+            "recall": 0.9047619047619048,
+            "f1": 0.95,
+            "roc_auc": 0.994378306878307
+          },
+          "Support Vector Machine": {
+            "accuracy": 0.9736842105263158,
+            "precision": 0.975609756097561,
+            "recall": 0.9523809523809523,
+            "f1": 0.963855421686747,
+            "roc_auc": 0.9947089947089947
+          },
+          "Neural Network (MLP)": {
+            "accuracy": 0.9736842105263158,
+            "precision": 1.0,
+            "recall": 0.9285714285714286,
+            "f1": 0.9629629629629629,
+            "roc_auc": 0.9986772486772487
+          },
+          "XGBoost": {
+            "accuracy": 0.956140350877193,
+            "precision": 1.0,
+            "recall": 0.8809523809523809,
+            "f1": 0.9367088607594937,
+            "roc_auc": 0.9927248677248677
+          }
+        }
+      },
+      "cv_selected_model": {
+        "name": "Support Vector Machine",
+        "test_roc_auc": 0.9947089947089947
+      },
+      "oracle_best_on_test": {
+        "name": "Extra Trees",
+        "roc_auc": 0.9990079365079365
+      },
+      "ensemble_gain_auc": 0.0036375661375662727,
+      "confusion_matrix": [
+        [
+          72,
+          0
+        ],
+        [
+          5,
+          37
+        ]
+      ]
+    },
+    "parkinsons": {
+      "info": {
+        "key": "parkinsons",
+        "name": "Parkinson's Disease",
+        "n_samples": 195,
+        "n_features": 22,
+        "positive_rate": 0.7538461538461538,
+        "majority_rate": 0.7538461538461538,
+        "missing_cells": 0,
+        "missing_pct": 0.0,
+        "source": "UCI Parkinsons (Oxford / Max Little)",
+        "blurb": "Detects Parkinson's from acoustic measures of sustained vowel phonation \u2014 jitter, shimmer and nonlinear voice measures.",
+        "positive_label": "Parkinson's detected",
+        "negative_label": "Healthy",
+        "icon": "\ud83e\udde0"
+      },
+      "majority_baseline": 0.7538461538461538,
+      "cv_weights": [
+        {
+          "Algorithm": "Extra Trees",
+          "Family": "Bagging",
+          "CV accuracy %": 89.74358974358975,
+          "ROC-AUC": 0.9576271186440677,
+          "F1": 0.9354838709677419,
+          "Precision": 0.8923076923076924,
+          "Recall": 0.9830508474576272,
+          "Weight %": 14.965986394557826
+        },
+        {
+          "Algorithm": "XGBoost",
+          "Family": "Boosting",
+          "CV accuracy %": 89.74358974358975,
+          "ROC-AUC": 0.955842997323818,
+          "F1": 0.9344262295081968,
+          "Precision": 0.9047619047619048,
+          "Recall": 0.9661016949152542,
+          "Weight %": 14.965986394557826
+        },
+        {
+          "Algorithm": "Gradient Boosting",
+          "Family": "Boosting",
+          "CV accuracy %": 89.1025641025641,
+          "ROC-AUC": 0.9409009812667262,
+          "F1": 0.9306122448979591,
+          "Precision": 0.8976377952755905,
+          "Recall": 0.9661016949152542,
+          "Weight %": 14.28571428571429
+        },
+        {
+          "Algorithm": "Random Forest",
+          "Family": "Bagging",
+          "CV accuracy %": 88.46153846153845,
+          "ROC-AUC": 0.9507136485280999,
+          "F1": 0.9262295081967213,
+          "Precision": 0.8968253968253969,
+          "Recall": 0.9576271186440678,
+          "Weight %": 13.605442176870744
+        },
+        {
+          "Algorithm": "K-Nearest Neighbours",
+          "Family": "Instance-based",
+          "CV accuracy %": 86.53846153846155,
+          "ROC-AUC": 0.941793041926851,
+          "F1": 0.9135802469135802,
+          "Precision": 0.888,
+          "Recall": 0.940677966101695,
+          "Weight %": 11.56462585034014
+        },
+        {
+          "Algorithm": "Decision Tree",
+          "Family": "Tree",
+          "CV accuracy %": 85.8974358974359,
+          "ROC-AUC": 0.8293933987511151,
+          "F1": 0.9051724137931034,
+          "Precision": 0.9210526315789473,
+          "Recall": 0.8898305084745762,
+          "Weight %": 10.884353741496593
+        },
+        {
+          "Algorithm": "Support Vector Machine",
+          "Family": "Kernel",
+          "CV accuracy %": 85.25641025641025,
+          "ROC-AUC": 0.8735504014272971,
+          "F1": 0.9090909090909091,
+          "Precision": 0.8518518518518519,
+          "Recall": 0.9745762711864406,
+          "Weight %": 10.20408163265306
+        },
+        {
+          "Algorithm": "Logistic Regression",
+          "Family": "Linear",
+          "CV accuracy %": 82.05128205128204,
+          "ROC-AUC": 0.8891614629794826,
+          "F1": 0.8861788617886179,
+          "Precision": 0.8515625,
+          "Recall": 0.923728813559322,
+          "Weight %": 6.802721088435372
+        },
+        {
+          "Algorithm": "Neural Network (MLP)",
+          "Family": "Neural",
+          "CV accuracy %": 78.2051282051282,
+          "ROC-AUC": 0.7979482604817127,
+          "F1": 0.8671875,
+          "Precision": 0.8043478260869565,
+          "Recall": 0.940677966101695,
+          "Weight %": 2.7210884353741513
+        },
+        {
+          "Algorithm": "Gaussian Naive Bayes",
+          "Family": "Probabilistic",
+          "CV accuracy %": 70.51282051282051,
+          "ROC-AUC": 0.8550401427297056,
+          "F1": 0.7653061224489796,
+          "Precision": 0.9615384615384616,
+          "Recall": 0.635593220338983,
+          "Weight %": 0.0
+        }
+      ],
+      "test": {
+        "ensemble": {
+          "accuracy": 0.9230769230769231,
+          "precision": 0.9333333333333333,
+          "recall": 0.9655172413793104,
+          "f1": 0.9491525423728814,
+          "roc_auc": 0.9758620689655172
+        },
+        "members": {
+          "Logistic Regression": {
+            "accuracy": 0.9230769230769231,
+            "precision": 0.9333333333333333,
+            "recall": 0.9655172413793104,
+            "f1": 0.9491525423728814,
+            "roc_auc": 0.9241379310344828
+          },
+          "Gaussian Naive Bayes": {
+            "accuracy": 0.6666666666666666,
+            "precision": 1.0,
+            "recall": 0.5517241379310345,
+            "f1": 0.7111111111111111,
+            "roc_auc": 0.8655172413793104
+          },
+          "K-Nearest Neighbours": {
+            "accuracy": 0.8974358974358975,
+            "precision": 0.9032258064516129,
+            "recall": 0.9655172413793104,
+            "f1": 0.9333333333333333,
+            "roc_auc": 0.9793103448275863
+          },
+          "Decision Tree": {
+            "accuracy": 0.7692307692307693,
+            "precision": 0.8846153846153846,
+            "recall": 0.7931034482758621,
+            "f1": 0.8363636363636363,
+            "roc_auc": 0.7982758620689655
+          },
+          "Random Forest": {
+            "accuracy": 0.9230769230769231,
+            "precision": 0.9333333333333333,
+            "recall": 0.9655172413793104,
+            "f1": 0.9491525423728814,
+            "roc_auc": 0.9689655172413794
+          },
+          "Extra Trees": {
+            "accuracy": 0.9230769230769231,
+            "precision": 0.9333333333333333,
+            "recall": 0.9655172413793104,
+            "f1": 0.9491525423728814,
+            "roc_auc": 0.9827586206896551
+          },
+          "Gradient Boosting": {
+            "accuracy": 0.9230769230769231,
+            "precision": 0.9642857142857143,
+            "recall": 0.9310344827586207,
+            "f1": 0.9473684210526315,
+            "roc_auc": 0.9758620689655173
+          },
+          "Support Vector Machine": {
+            "accuracy": 0.9487179487179487,
+            "precision": 0.9354838709677419,
+            "recall": 1.0,
+            "f1": 0.9666666666666667,
+            "roc_auc": 0.9551724137931035
+          },
+          "Neural Network (MLP)": {
+            "accuracy": 0.8205128205128205,
+            "precision": 0.8235294117647058,
+            "recall": 0.9655172413793104,
+            "f1": 0.8888888888888888,
+            "roc_auc": 0.9
+          },
+          "XGBoost": {
+            "accuracy": 0.9230769230769231,
+            "precision": 0.9333333333333333,
+            "recall": 0.9655172413793104,
+            "f1": 0.9491525423728814,
+            "roc_auc": 0.9793103448275862
+          }
+        }
+      },
+      "cv_selected_model": {
+        "name": "Extra Trees",
+        "test_roc_auc": 0.9827586206896551
+      },
+      "oracle_best_on_test": {
+        "name": "Extra Trees",
+        "roc_auc": 0.9827586206896551
+      },
+      "ensemble_gain_auc": -0.006896551724137945,
+      "confusion_matrix": [
+        [
+          8,
+          2
+        ],
+        [
+          1,
+          28
+        ]
+      ]
+    },
+    "liver": {
+      "info": {
+        "key": "liver",
+        "name": "Liver Disease",
+        "n_samples": 583,
+        "n_features": 10,
+        "positive_rate": 0.7135506003430532,
+        "majority_rate": 0.7135506003430532,
+        "missing_cells": 4,
+        "missing_pct": 0.0006861063464837049,
+        "source": "Indian Liver Patient Dataset (UCI)",
+        "blurb": "Predicts liver disease from a standard liver function blood panel.",
+        "positive_label": "Liver disease",
+        "negative_label": "No liver disease",
+        "icon": "\ud83e\udec0"
+      },
+      "majority_baseline": 0.7135506003430532,
+      "cv_weights": [
+        {
+          "Algorithm": "Logistic Regression",
+          "Family": "Linear",
+          "CV accuracy %": 72.53218884120172,
+          "ROC-AUC": 0.7128180812391338,
+          "F1": 0.830238726790451,
+          "Precision": 0.7434679334916865,
+          "Recall": 0.93993993993994,
+          "Weight %": 31.25000000000006
+        },
+        {
+          "Algorithm": "Extra Trees",
+          "Family": "Bagging",
+          "CV accuracy %": 72.3175965665236,
+          "ROC-AUC": 0.7408837408837408,
+          "F1": 0.8304862023653088,
+          "Precision": 0.7383177570093458,
+          "Recall": 0.948948948948949,
+          "Weight %": 24.99999999999992
+        },
+        {
+          "Algorithm": "XGBoost",
+          "Family": "Boosting",
+          "CV accuracy %": 72.3175965665236,
+          "ROC-AUC": 0.7212174580595634,
+          "F1": 0.8170212765957446,
+          "Precision": 0.7741935483870968,
+          "Recall": 0.8648648648648649,
+          "Weight %": 24.99999999999992
+        },
+        {
+          "Algorithm": "Random Forest",
+          "Family": "Bagging",
+          "CV accuracy %": 72.1030042918455,
+          "ROC-AUC": 0.7322359953938902,
+          "F1": 0.8228882833787466,
+          "Precision": 0.7531172069825436,
+          "Recall": 0.9069069069069069,
+          "Weight %": 18.7500000000001
+        },
+        {
+          "Algorithm": "Gaussian Naive Bayes",
+          "Family": "Probabilistic",
+          "CV accuracy %": 52.57510729613733,
+          "ROC-AUC": 0.70791844476055,
+          "F1": 0.5206073752711496,
+          "Precision": 0.9375,
+          "Recall": 0.36036036036036034,
+          "Weight %": 0.0
+        },
+        {
+          "Algorithm": "K-Nearest Neighbours",
+          "Family": "Instance-based",
+          "CV accuracy %": 68.24034334763948,
+          "ROC-AUC": 0.6766465713834136,
+          "F1": 0.7938718662952646,
+          "Precision": 0.7402597402597403,
+          "Recall": 0.8558558558558559,
+          "Weight %": 0.0
+        },
+        {
+          "Algorithm": "Decision Tree",
+          "Family": "Tree",
+          "CV accuracy %": 63.73390557939914,
+          "ROC-AUC": 0.627164758743706,
+          "F1": 0.7511045655375552,
+          "Precision": 0.7369942196531792,
+          "Recall": 0.7657657657657657,
+          "Weight %": 0.0
+        },
+        {
+          "Algorithm": "Gradient Boosting",
+          "Family": "Boosting",
+          "CV accuracy %": 70.81545064377683,
+          "ROC-AUC": 0.7136986610670821,
+          "F1": 0.8095238095238095,
+          "Precision": 0.7585301837270341,
+          "Recall": 0.8678678678678678,
+          "Weight %": 0.0
+        },
+        {
+          "Algorithm": "Support Vector Machine",
+          "Family": "Kernel",
+          "CV accuracy %": 71.03004291845494,
+          "ROC-AUC": 0.5999006525322315,
+          "F1": 0.8306148055207027,
+          "Precision": 0.7133620689655172,
+          "Recall": 0.993993993993994,
+          "Weight %": 0.0
+        },
+        {
+          "Algorithm": "Neural Network (MLP)",
+          "Family": "Neural",
+          "CV accuracy %": 71.24463519313305,
+          "ROC-AUC": 0.6393009550904287,
+          "F1": 0.8277634961439588,
+          "Precision": 0.7235955056179775,
+          "Recall": 0.9669669669669669,
+          "Weight %": 0.0
+        }
+      ],
+      "test": {
+        "ensemble": {
+          "accuracy": 0.717948717948718,
+          "precision": 0.75,
+          "recall": 0.9036144578313253,
+          "f1": 0.819672131147541,
+          "roc_auc": 0.8036853295535082
+        },
+        "members": {
+          "Logistic Regression": {
+            "accuracy": 0.7350427350427351,
+            "precision": 0.7407407407407407,
+            "recall": 0.963855421686747,
+            "f1": 0.837696335078534,
+            "roc_auc": 0.8306165839829908
+          },
+          "Gaussian Naive Bayes": {
+            "accuracy": 0.6410256410256411,
+            "precision": 0.9767441860465116,
+            "recall": 0.5060240963855421,
+            "f1": 0.6666666666666666,
+            "roc_auc": 0.7994330262225372
+          },
+          "K-Nearest Neighbours": {
+            "accuracy": 0.717948717948718,
+            "precision": 0.7450980392156863,
+            "recall": 0.9156626506024096,
+            "f1": 0.8216216216216217,
+            "roc_auc": 0.7873848334514528
+          },
+          "Decision Tree": {
+            "accuracy": 0.6324786324786325,
+            "precision": 0.7040816326530612,
+            "recall": 0.8313253012048193,
+            "f1": 0.7624309392265194,
+            "roc_auc": 0.6580439404677535
+          },
+          "Random Forest": {
+            "accuracy": 0.7350427350427351,
+            "precision": 0.76,
+            "recall": 0.9156626506024096,
+            "f1": 0.8306010928961749,
+            "roc_auc": 0.7739192062367116
+          },
+          "Extra Trees": {
+            "accuracy": 0.7521367521367521,
+            "precision": 0.7454545454545455,
+            "recall": 0.9879518072289156,
+            "f1": 0.8497409326424871,
+            "roc_auc": 0.8012048192771085
+          },
+          "Gradient Boosting": {
+            "accuracy": 0.6837606837606838,
+            "precision": 0.7254901960784313,
+            "recall": 0.891566265060241,
+            "f1": 0.8,
+            "roc_auc": 0.7501771793054571
+          },
+          "Support Vector Machine": {
+            "accuracy": 0.7094017094017094,
+            "precision": 0.7094017094017094,
+            "recall": 1.0,
+            "f1": 0.83,
+            "roc_auc": 0.6814316087880934
+          },
+          "Neural Network (MLP)": {
+            "accuracy": 0.7094017094017094,
+            "precision": 0.7094017094017094,
+            "recall": 1.0,
+            "f1": 0.83,
+            "roc_auc": 0.7317505315379164
+          },
+          "XGBoost": {
+            "accuracy": 0.7264957264957265,
+            "precision": 0.7575757575757576,
+            "recall": 0.9036144578313253,
+            "f1": 0.8241758241758241,
+            "roc_auc": 0.753012048192771
+          }
+        }
+      },
+      "cv_selected_model": {
+        "name": "Logistic Regression",
+        "test_roc_auc": 0.8306165839829908
+      },
+      "oracle_best_on_test": {
+        "name": "Logistic Regression",
+        "roc_auc": 0.8306165839829908
+      },
+      "ensemble_gain_auc": -0.02693125442948252,
+      "confusion_matrix": [
+        [
+          9,
+          25
+        ],
+        [
+          8,
+          75
+        ]
+      ]
+    },
+    "kidney": {
+      "info": {
+        "key": "kidney",
+        "name": "Chronic Kidney Disease",
+        "n_samples": 399,
+        "n_features": 24,
+        "positive_rate": 0.6265664160401002,
+        "majority_rate": 0.6265664160401002,
+        "missing_cells": 1012,
+        "missing_pct": 0.10568086883876357,
+        "source": "UCI Chronic Kidney Disease",
+        "blurb": "Detects chronic kidney disease from blood and urine tests. This dataset is heavily missing-value laden, which makes the imputation step matter as much as the classifier.",
+        "positive_label": "Chronic kidney disease",
+        "negative_label": "Healthy",
+        "icon": "\ud83e\uded8"
+      },
+      "majority_baseline": 0.6265664160401002,
+      "cv_weights": [
+        {
+          "Algorithm": "Support Vector Machine",
+          "Family": "Kernel",
+          "CV accuracy %": 99.68652037617555,
+          "ROC-AUC": 1.0,
+          "F1": 0.9974937343358395,
+          "Precision": 1.0,
+          "Recall": 0.995,
+          "Weight %": 10.488888888888889
+        },
+        {
+          "Algorithm": "Logistic Regression",
+          "Family": "Linear",
+          "CV accuracy %": 99.05956112852664,
+          "ROC-AUC": 0.9997478991596639,
+          "F1": 0.9925187032418953,
+          "Precision": 0.9900497512437811,
+          "Recall": 0.995,
+          "Weight %": 10.311111111111112
+        },
+        {
+          "Algorithm": "Random Forest",
+          "Family": "Bagging",
+          "CV accuracy %": 99.05956112852664,
+          "ROC-AUC": 0.9990756302521008,
+          "F1": 0.9925558312655087,
+          "Precision": 0.9852216748768473,
+          "Recall": 1.0,
+          "Weight %": 10.311111111111112
+        },
+        {
+          "Algorithm": "Extra Trees",
+          "Family": "Bagging",
+          "CV accuracy %": 99.05956112852664,
+          "ROC-AUC": 0.9999579831932773,
+          "F1": 0.9924433249370277,
+          "Precision": 1.0,
+          "Recall": 0.985,
+          "Weight %": 10.311111111111112
+        },
+        {
+          "Algorithm": "Gradient Boosting",
+          "Family": "Boosting",
+          "CV accuracy %": 98.7460815047022,
+          "ROC-AUC": 0.9772478991596639,
+          "F1": 0.9900990099009901,
+          "Precision": 0.9803921568627451,
+          "Recall": 1.0,
+          "Weight %": 10.222222222222225
+        },
+        {
+          "Algorithm": "XGBoost",
+          "Family": "Boosting",
+          "CV accuracy %": 98.7460815047022,
+          "ROC-AUC": 0.997983193277311,
+          "F1": 0.9900497512437811,
+          "Precision": 0.9851485148514851,
+          "Recall": 0.995,
+          "Weight %": 10.222222222222225
+        },
+        {
+          "Algorithm": "Neural Network (MLP)",
+          "Family": "Neural",
+          "CV accuracy %": 97.4921630094044,
+          "ROC-AUC": 0.9966806722689077,
+          "F1": 0.9800995024875622,
+          "Precision": 0.9752475247524752,
+          "Recall": 0.985,
+          "Weight %": 9.866666666666667
+        },
+        {
+          "Algorithm": "Decision Tree",
+          "Family": "Tree",
+          "CV accuracy %": 96.55172413793103,
+          "ROC-AUC": 0.9730252100840335,
+          "F1": 0.972568578553616,
+          "Precision": 0.9701492537313433,
+          "Recall": 0.975,
+          "Weight %": 9.600000000000001
+        },
+        {
+          "Algorithm": "Gaussian Naive Bayes",
+          "Family": "Probabilistic",
+          "CV accuracy %": 96.23824451410658,
+          "ROC-AUC": 0.9999579831932773,
+          "F1": 0.9690721649484536,
+          "Precision": 1.0,
+          "Recall": 0.94,
+          "Weight %": 9.511111111111111
+        },
+        {
+          "Algorithm": "K-Nearest Neighbours",
+          "Family": "Instance-based",
+          "CV accuracy %": 94.98432601880877,
+          "ROC-AUC": 0.9965336134453782,
+          "F1": 0.9583333333333334,
+          "Precision": 1.0,
+          "Recall": 0.92,
+          "Weight %": 9.155555555555555
+        }
+      ],
+      "test": {
+        "ensemble": {
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "roc_auc": 1.0
+        },
+        "members": {
+          "Logistic Regression": {
+            "accuracy": 0.9875,
+            "precision": 1.0,
+            "recall": 0.98,
+            "f1": 0.98989898989899,
+            "roc_auc": 1.0
+          },
+          "Gaussian Naive Bayes": {
+            "accuracy": 0.975,
+            "precision": 1.0,
+            "recall": 0.96,
+            "f1": 0.9795918367346939,
+            "roc_auc": 1.0
+          },
+          "K-Nearest Neighbours": {
+            "accuracy": 0.975,
+            "precision": 1.0,
+            "recall": 0.96,
+            "f1": 0.9795918367346939,
+            "roc_auc": 1.0
+          },
+          "Decision Tree": {
+            "accuracy": 0.975,
+            "precision": 0.98,
+            "recall": 0.98,
+            "f1": 0.98,
+            "roc_auc": 0.9883333333333334
+          },
+          "Random Forest": {
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "roc_auc": 1.0
+          },
+          "Extra Trees": {
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "roc_auc": 1.0
+          },
+          "Gradient Boosting": {
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "roc_auc": 1.0
+          },
+          "Support Vector Machine": {
+            "accuracy": 0.9875,
+            "precision": 1.0,
+            "recall": 0.98,
+            "f1": 0.98989898989899,
+            "roc_auc": 1.0
+          },
+          "Neural Network (MLP)": {
+            "accuracy": 0.975,
+            "precision": 0.98,
+            "recall": 0.98,
+            "f1": 0.98,
+            "roc_auc": 0.9973333333333334
+          },
+          "XGBoost": {
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "roc_auc": 1.0
+          }
+        }
+      },
+      "cv_selected_model": {
+        "name": "Support Vector Machine",
+        "test_roc_auc": 1.0
+      },
+      "oracle_best_on_test": {
+        "name": "Logistic Regression",
+        "roc_auc": 1.0
+      },
+      "ensemble_gain_auc": 0.0,
+      "confusion_matrix": [
+        [
+          30,
+          0
+        ],
+        [
+          0,
+          50
+        ]
+      ]
+    }
+  },
+  "weight_scheme": "above_baseline",
+  "cv_folds": 5,
+  "summary": [
+    {
+      "Disease": "Diabetes",
+      "Samples": 768,
+      "Baseline": 0.651,
+      "Accuracy": 0.7338,
+      "Precision": 0.6383,
+      "Recall": 0.5556,
+      "F1": 0.5941,
+      "ROC-AUC": 0.8159,
+      "CV-picked model": "Logistic Regression",
+      "its AUC": 0.813,
+      "Ensemble gain": 0.003
+    },
+    {
+      "Disease": "Heart Disease",
+      "Samples": 303,
+      "Baseline": 0.5413,
+      "Accuracy": 0.8852,
+      "Precision": 0.8387,
+      "Recall": 0.9286,
+      "F1": 0.8814,
+      "ROC-AUC": 0.9491,
+      "CV-picked model": "Support Vector Machine",
+      "its AUC": 0.9437,
+      "Ensemble gain": 0.0054
+    },
+    {
+      "Disease": "Breast Cancer",
+      "Samples": 569,
+      "Baseline": 0.6274,
+      "Accuracy": 0.9561,
+      "Precision": 1.0,
+      "Recall": 0.881,
+      "F1": 0.9367,
+      "ROC-AUC": 0.9983,
+      "CV-picked model": "Support Vector Machine",
+      "its AUC": 0.9947,
+      "Ensemble gain": 0.0036
+    },
+    {
+      "Disease": "Parkinson's Disease",
+      "Samples": 195,
+      "Baseline": 0.7538,
+      "Accuracy": 0.9231,
+      "Precision": 0.9333,
+      "Recall": 0.9655,
+      "F1": 0.9492,
+      "ROC-AUC": 0.9759,
+      "CV-picked model": "Extra Trees",
+      "its AUC": 0.9828,
+      "Ensemble gain": -0.0069
+    },
+    {
+      "Disease": "Liver Disease",
+      "Samples": 583,
+      "Baseline": 0.7136,
+      "Accuracy": 0.7179,
+      "Precision": 0.75,
+      "Recall": 0.9036,
+      "F1": 0.8197,
+      "ROC-AUC": 0.8037,
+      "CV-picked model": "Logistic Regression",
+      "its AUC": 0.8306,
+      "Ensemble gain": -0.0269
+    },
+    {
+      "Disease": "Chronic Kidney Disease",
+      "Samples": 399,
+      "Baseline": 0.6266,
+      "Accuracy": 1.0,
+      "Precision": 1.0,
+      "Recall": 1.0,
+      "F1": 1.0,
+      "ROC-AUC": 1.0,
+      "CV-picked model": "Support Vector Machine",
+      "its AUC": 1.0,
+      "Ensemble gain": 0.0
+    }
+  ]
+}

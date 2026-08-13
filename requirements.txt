@@ -1,0 +1,25 @@
+# Medical Disease Detection System
+#
+# The tabular half (6 diseases x 10 algorithms) needs nothing but scikit-learn
+# and XGBoost, and trains in about two minutes on a CPU.
+#
+# TensorFlow is only needed to TRAIN or RUN the imaging CNNs locally. If you use
+# the Kaggle notebooks in notebooks/ for that, you can skip it entirely.
+
+numpy>=1.24,<2
+pandas>=2.0
+scikit-learn>=1.3
+xgboost>=2.0
+joblib>=1.3
+scipy>=1.11
+
+# figures
+matplotlib>=3.8
+seaborn>=0.13
+
+# web UI
+streamlit>=1.30
+pillow>=10.0
+
+# optional — imaging CNNs only (train on Kaggle GPU instead if you prefer)
+# tensorflow>=2.15
