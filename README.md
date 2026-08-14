@@ -1,12 +1,14 @@
 # 🩺 Medical Disease Detection System
 
-A multi-disease screening system covering **9 conditions — 6 from clinical data
-and 3 from medical images**. Every condition is run through **10 different
+A multi-disease screening system covering **8 conditions — 6 from clinical data
+and 2 from medical images**. Every condition is run through **10 different
 machine-learning algorithms**, and the final verdict is a soft vote in which
 each algorithm's opinion is weighted by how good that algorithm actually is.
 
 Images go through the same ten algorithms: a fine-tuned CNN turns the scan into
 an embedding, and the ten classifiers vote on that.
+
+![The dashboard](assets/ui-dashboard.png)
 
 > ⚠️ **Not a medical device.** A student project on small public research
 > datasets. It cannot diagnose anyone and must never be used to.
@@ -25,7 +27,10 @@ an embedding, and the ten classifiers vote on that.
 | 6 | Chronic Kidney Disease | UCI CKD | 399 | 10-model ensemble |
 | 7 | Brain Tumour | MRI, 4 classes | 3,264 images | CNN embedding + 10-model ensemble |
 | 8 | Pneumonia | Chest X-ray | 5,863 images | CNN embedding + 10-model ensemble |
-| 9 | COVID-19 | Chest X-ray | 2,284 images | CNN embedding + 10-model ensemble |
+
+A COVID-19 chest X-ray set (2,284 images) is also wired into the registry and
+downloadable, but no model is trained for it — the app lists only the
+conditions it can actually score.
 
 ---
 
@@ -172,7 +177,7 @@ Analysis, keeping the count at ten.
 pip install -r requirements.txt
 python -m src.download_data      # rebuild all six CSVs from source (~200 KB)
 python -m src.train_tabular      # 6 diseases x 10 algorithms (~2 min, CPU)
-streamlit run app.py
+python -m web.server             # http://127.0.0.1:8000
 ```
 
 Train just one condition:
@@ -181,9 +186,44 @@ Train just one condition:
 python -m src.train_tabular diabetes
 ```
 
-The web UI has three modes: enter patient measurements and see the weighted
-verdict with the full 10-algorithm breakdown; upload a scan for the CNN models;
-or browse the complete performance dashboard.
+### The web app
+
+A FastAPI backend over the trained ensembles and a static frontend — vanilla ES
+modules, no framework and no build step, so `python -m web.server` is the whole
+toolchain. Models are loaded once at startup, because unpickling eight ensembles
+takes long enough to be felt on every request otherwise.
+
+| Endpoint | Returns |
+|---|---|
+| `GET /api/catalog` | every condition, for the navigation |
+| `GET /api/disease/{key}` | field schema, metrics, per-model weights |
+| `POST /api/predict/{key}` | verdict, agreement, and all ten votes |
+| `POST /api/imaging/{key}/predict` | the same, for an uploaded scan |
+| `GET /api/performance` | held-out results for everything |
+
+Three views: enter measurements and see the weighted verdict with the full
+10-algorithm breakdown; drop in a scan for the imaging ensembles; or browse the
+performance tables.
+
+**Imaging needs TensorFlow**, which cannot share an environment with mediapipe,
+so run the server from an environment that has it:
+
+```bash
+.venv-tf\Scripts\python.exe -m web.server
+```
+
+The clinical half works anywhere.
+
+### Design
+
+The interface is deliberately quiet: one accent colour, hairline rules on paper,
+a serif for display against a sans for interface text, and figures set in a
+monospace so digits do not shift as they animate. Colour is reserved for the two
+things that carry meaning — the verdict, and which way each model voted.
+Conditions are a ruled list rather than a grid of coloured tiles, because a tile
+per condition implies a hierarchy that does not exist. It respects
+`prefers-reduced-motion`, and the light and dark themes are one token block
+apart.
 
 ---
 
@@ -292,27 +332,43 @@ python -m src.train_image covid_xray
 
 ```
 02-medical-disease-detection/
-├── app.py                        # Streamlit UI (3 modes)
+├── web/
+│   ├── server.py                 # FastAPI: JSON API + static hosting
+│   └── static/
+│       ├── index.html
+│       ├── css/theme.css         # the design system, all of it
+│       └── js/
+│           ├── app.js            # views, forms, results
+│           └── scene.js          # the line-work DNA helix (three.js)
+├── app.py                        # the earlier Streamlit UI, kept for reference
+├── assets/ui-dashboard.png
 ├── requirements.txt
 ├── data/tabular/                 # the six cleaned CSVs (committed)
 ├── data/images/                  # git-ignored; rebuild with download_data
 ├── models/tabular/               # one bundle per disease
-├── notebooks/                    # Kaggle GPU notebooks for the CNNs
-├── reports/tabular_metrics.json  # every number in this README
+├── models/image/                 # git-ignored; from the Kaggle notebook
+├── notebooks/                    # Kaggle GPU notebooks
+├── reports/                      # every number in this README
 └── src/
     ├── config.py                 # disease registry + weighting scheme
     ├── data_prep.py              # per-disease cleaning + UI field metadata
     ├── models.py                 # the 10 algorithms + preprocessing
     ├── ensemble.py               # accuracy-weighted soft voting
+    ├── image_ensemble.py         # CNN embedding -> the same 10 algorithms
+    ├── check_image_models.py     # verifies downloaded imaging artefacts load
     ├── train_tabular.py          # trains and scores everything
     ├── train_image.py            # CNN training (local or Kaggle)
+    ├── ui.py                     # Streamlit styling (legacy UI only)
     └── download_data.py
 ```
 
 ## Tech stack
 
-Python · scikit-learn · XGBoost · pandas · NumPy · Streamlit ·
-TensorFlow/Keras (imaging) · Matplotlib · seaborn
+**Backend** Python · FastAPI · scikit-learn · XGBoost · pandas · NumPy ·
+TensorFlow/Keras (imaging)
+
+**Frontend** vanilla ES modules · three.js · CSS custom properties — no
+framework, no build step
 
 ## Datasets
 
