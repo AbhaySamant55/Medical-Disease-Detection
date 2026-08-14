@@ -20,6 +20,13 @@ const api = async (url, opts) => {
   return res.json();
 };
 const pct = (v, d = 1) => `${(v * 100).toFixed(d)}%`;
+/** Cut at a word boundary rather than mid-word, and only if it actually helps. */
+const trim = (s, n) => {
+  s = String(s || "");
+  if (s.length <= n) return s;
+  const cut = s.slice(0, n);
+  return cut.slice(0, cut.lastIndexOf(" ")) + "…";
+};
 const esc = (s) => String(s).replace(/[&<>"]/g,
   (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
@@ -101,19 +108,23 @@ function renderHome() {
       <div class="stat-s">${esc(s)}</div>
     </div>`).join("");
 
+  // one row per condition: icon, description, figures. A grid of coloured
+  // tiles would give each condition a different visual weight for no reason.
   const card = (d, kind, i) => `
     <button class="dcard" data-kind="${kind}" data-key="${esc(d.key)}"
-            style="animation-delay:${i * 0.05}s">
-      <div class="ico">${d.icon}</div>
-      <h4>${esc(d.name)}</h4>
-      <p class="muted small">${esc((d.blurb || "").slice(0, 96))}…</p>
-      <div class="meta">
+            style="animation-delay:${Math.min(i * 0.04, 0.3)}s">
+      <span class="ico">${d.icon}</span>
+      <span>
+        <h4>${esc(d.name)}</h4>
+        <p>${esc(trim(d.blurb, 104))}</p>
+      </span>
+      <span class="meta">
         ${kind === "tabular"
-          ? `<span>Accuracy <b>${pct(d.metrics.accuracy, 0)}</b></span>
-             <span>AUC <b>${d.metrics.roc_auc.toFixed(3)}</b></span>`
-          : `<span><b>${d.classes.length}</b> classes</span>
-             <span><b>${d.algorithms}</b> models</span>`}
-      </div>
+          ? `<span>${pct(d.metrics.accuracy, 0)} <b>acc</b></span>
+             <span>${d.metrics.roc_auc.toFixed(3)} <b>auc</b></span>`
+          : `<span>${d.classes.length} <b>classes</b></span>
+             <span>${d.algorithms} <b>models</b></span>`}
+      </span>
     </button>`;
 
   $("#home-cards").innerHTML =

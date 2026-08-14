@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vitalis — Medical Disease Detection</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/static/css/theme.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫀</text></svg>">
 </head>
@@ -70,18 +70,18 @@
     <!-- hero / home ---------------------------------------------------- -->
     <section class="view active" id="view-home">
       <div class="hero">
-        <canvas id="helix" class="hero-canvas"></canvas>
         <div class="hero-copy">
-          <span class="pill">10 algorithms · weighted consensus</span>
+          <span class="pill">Ten algorithms · weighted consensus</span>
           <h1>Diagnostic screening across <em id="cond-count">9</em> conditions</h1>
-          <p>Every condition is assessed by ten independent machine-learning
-             models. Each one votes, weighted by how far it beat its own
-             baseline — the verdict is their consensus, not a single opinion.</p>
+          <p>Every condition is assessed by ten independent models. Each votes,
+             weighted by how far it beat its own baseline — so the verdict is a
+             consensus, and you can see exactly who dissented.</p>
           <div class="hero-actions">
             <button class="btn primary" data-goto="first-disease">Begin assessment</button>
-            <button class="btn" data-view="performance">View performance</button>
+            <button class="btn" data-view="performance">Performance</button>
           </div>
         </div>
+        <canvas id="helix" class="hero-canvas"></canvas>
       </div>
       <div class="stat-row" id="home-stats"></div>
       <div class="card-grid" id="home-cards"></div>
