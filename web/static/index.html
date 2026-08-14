@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vitalis — Medical Disease Detection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/theme.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫀</text></svg>">
+</head>
+<body>
+
+<!-- ambient background --------------------------------------------------->
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="bg-glow" aria-hidden="true"></div>
+
+<!-- boot screen ---------------------------------------------------------->
+<div id="boot" class="boot">
+  <div class="boot-inner">
+    <svg class="boot-ecg" viewBox="0 0 240 60" aria-hidden="true">
+      <polyline points="0,30 40,30 52,30 60,10 70,50 80,22 90,30 130,30 142,30 150,16 160,44 170,30 240,30"/>
+    </svg>
+    <p class="boot-text">Loading diagnostic models…</p>
+  </div>
+</div>
+
+<div class="shell" id="shell" hidden>
+
+  <!-- sidebar ------------------------------------------------------------>
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/>
+        </svg>
+      </span>
+      <div>
+        <strong>Vitalis</strong>
+        <small>Diagnostic Suite</small>
+      </div>
+    </div>
+
+    <nav class="nav" id="nav">
+      <p class="nav-label">Clinical data</p>
+      <div id="nav-tabular" class="nav-group"></div>
+      <p class="nav-label">Medical imaging</p>
+      <div id="nav-imaging" class="nav-group"></div>
+      <p class="nav-label">System</p>
+      <div class="nav-group">
+        <button class="nav-item" data-view="performance">
+          <span class="nav-ico">📊</span><span>Performance</span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="sidebar-foot">
+      <button id="theme-toggle" class="ghost-btn" title="Toggle theme">
+        <span class="t-dark">◐</span><span class="t-light">◑</span> Theme
+      </button>
+      <p class="disclaimer">Research project. Not a medical device.</p>
+    </div>
+  </aside>
+
+  <!-- main --------------------------------------------------------------->
+  <main class="main" id="main">
+
+    <!-- hero / home ---------------------------------------------------- -->
+    <section class="view active" id="view-home">
+      <div class="hero">
+        <canvas id="helix" class="hero-canvas"></canvas>
+        <div class="hero-copy">
+          <span class="pill">10 algorithms · weighted consensus</span>
+          <h1>Diagnostic screening across <em id="cond-count">9</em> conditions</h1>
+          <p>Every condition is assessed by ten independent machine-learning
+             models. Each one votes, weighted by how far it beat its own
+             baseline — the verdict is their consensus, not a single opinion.</p>
+          <div class="hero-actions">
+            <button class="btn primary" data-goto="first-disease">Begin assessment</button>
+            <button class="btn" data-view="performance">View performance</button>
+          </div>
+        </div>
+      </div>
+      <div class="stat-row" id="home-stats"></div>
+      <div class="card-grid" id="home-cards"></div>
+    </section>
+
+    <!-- tabular disease ------------------------------------------------ -->
+    <section class="view" id="view-disease">
+      <header class="view-head">
+        <div>
+          <span class="crumb" id="d-crumb">Clinical data</span>
+          <h2 id="d-title">—</h2>
+          <p class="muted" id="d-blurb"></p>
+        </div>
+        <div class="head-metrics" id="d-metrics"></div>
+      </header>
+
+      <div class="split">
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Patient measurements</h3>
+            <button class="ghost-btn" id="d-reset">Reset to median</button>
+          </div>
+          <form id="d-form" class="form-grid" autocomplete="off"></form>
+          <button class="btn primary wide" id="d-run">
+            <span class="btn-label">Run all 10 algorithms</span>
+            <span class="btn-spin" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <div class="panel" id="d-result-panel">
+          <div class="empty" id="d-empty">
+            <div class="empty-ico">🩺</div>
+            <p>Enter measurements and run the assessment.</p>
+          </div>
+          <div id="d-result" hidden></div>
+        </div>
+      </div>
+
+      <div class="panel" id="d-votes-panel" hidden>
+        <div class="panel-head">
+          <h3>How each algorithm voted</h3>
+          <span class="muted small" id="d-vote-note"></span>
+        </div>
+        <div id="d-votes" class="votes"></div>
+      </div>
+    </section>
+
+    <!-- imaging --------------------------------------------------------- -->
+    <section class="view" id="view-imaging">
+      <header class="view-head">
+        <div>
+          <span class="crumb">Medical imaging</span>
+          <h2 id="i-title">—</h2>
+          <p class="muted" id="i-blurb"></p>
+        </div>
+        <div class="head-metrics" id="i-metrics"></div>
+      </header>
+
+      <div class="split">
+        <div class="panel">
+          <div class="dropzone" id="i-drop">
+            <input type="file" id="i-file" accept="image/*" hidden>
+            <div class="dz-inner">
+              <div class="dz-scan" aria-hidden="true"></div>
+              <div class="dz-ico">🖼️</div>
+              <p><strong>Drop a scan here</strong><br>or click to browse</p>
+              <small>JPG or PNG</small>
+            </div>
+            <img id="i-preview" alt="uploaded scan" hidden>
+          </div>
+        </div>
+        <div class="panel" id="i-result-panel">
+          <div class="empty" id="i-empty">
+            <div class="empty-ico">🔬</div>
+            <p>Upload a scan to run the ensemble.</p>
+          </div>
+          <div id="i-result" hidden></div>
+        </div>
+      </div>
+
+      <div class="panel" id="i-votes-panel" hidden>
+        <div class="panel-head"><h3>How each algorithm voted</h3></div>
+        <div id="i-votes" class="votes"></div>
+      </div>
+    </section>
+
+    <!-- performance ----------------------------------------------------- -->
+    <section class="view" id="view-performance">
+      <header class="view-head">
+        <div>
+          <span class="crumb">System</span>
+          <h2>Model performance</h2>
+          <p class="muted">Held-out test results. Weights come from
+             cross-validation on the training split only, so these numbers are
+             not contaminated by the models that produced them.</p>
+        </div>
+      </header>
+      <div class="panel"><div id="perf-tabular"></div></div>
+      <div class="panel" id="perf-image-panel" hidden><div id="perf-image"></div></div>
+    </section>
+
+  </main>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+</script>
+<script type="module" src="/static/js/scene.js"></script>
+<script type="module" src="/static/js/app.js"></script>
+</body>
+</html>

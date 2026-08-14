@@ -28,3 +28,8 @@ pillow>=10.0
 
 # optional — imaging CNNs only (train on Kaggle GPU instead if you prefer)
 # tensorflow>=2.15
+
+# web app (replaces the Streamlit UI)
+fastapi>=0.110
+uvicorn[standard]>=0.27
+python-multipart>=0.0.9

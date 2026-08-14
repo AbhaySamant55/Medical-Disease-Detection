@@ -18,10 +18,11 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from src import config
+from src import config, ui
 
 st.set_page_config(page_title="Medical Disease Detection System",
                    page_icon="🩺", layout="wide")
+ui.inject()
 
 DISCLAIMER = (
     "This is a student machine-learning project trained on small public research "
@@ -79,17 +80,17 @@ if mode == "Clinical data (10-model ensemble)":
     ens, info, meta = bundle["ensemble"], bundle["info"], bundle["feature_meta"]
     spec = config.DISEASES[key]
 
-    st.title(f"{spec['icon']} {spec['name']}")
-    st.caption(spec["blurb"])
-
-    c1, c2, c3, c4 = st.columns(4)
     t = bundle["test_metrics"]["ensemble"]
-    c1.metric("Test accuracy", f"{t['accuracy']:.1%}")
-    c2.metric("ROC-AUC", f"{t['roc_auc']:.3f}")
-    c3.metric("Recall (sensitivity)", f"{t['recall']:.1%}")
-    c4.metric("Algorithms", len(ens.fitted_))
-
-    st.divider()
+    st.markdown(
+        ui.hero(f"{spec['icon']}  {spec['name']}", spec["blurb"],
+                f"{len(ens.fitted_)} algorithms · weighted vote"),
+        unsafe_allow_html=True)
+    st.markdown(ui.stats([
+        ("Test accuracy", f"{t['accuracy']:.1%}", "held-out split"),
+        ("ROC-AUC", f"{t['roc_auc']:.3f}", "threshold-independent"),
+        ("Sensitivity", f"{t['recall']:.1%}", "cases correctly caught"),
+        ("Baseline", f"{info['majority_rate']:.1%}", "always-majority guess"),
+    ]), unsafe_allow_html=True)
     st.subheader("Patient measurements")
     st.caption("Defaults are the dataset median for each field.")
 
@@ -126,51 +127,47 @@ if mode == "Clinical data (10-model ensemble)":
         p_disease = float(proba[1])
         detail = ens.explain(X)
 
-        verdict = spec["positive_label"] if p_disease >= 0.5 else spec["negative_label"]
+        is_positive = p_disease >= 0.5
+        verdict = spec["positive_label"] if is_positive else spec["negative_label"]
         votes_positive = int((detail["Prediction"] == 1).sum())
         n_models = len(detail)
+        confidence = max(p_disease, 1 - p_disease)
 
-        st.subheader("Final weighted verdict")
-        left, right = st.columns([2, 3])
-        with left:
-            if p_disease >= 0.5:
-                st.error(f"### {verdict}")
-            else:
-                st.success(f"### {verdict}")
-            st.metric("Weighted probability of disease", f"{p_disease:.1%}")
-            st.progress(min(max(p_disease, 0.0), 1.0))
-            st.metric("Model agreement",
-                      f"{votes_positive}/{n_models} say {spec['positive_label'].lower()}")
-            confidence = max(p_disease, 1 - p_disease)
-            st.caption(
-                f"Combined surety **{confidence:.1%}**. The verdict is the "
-                "accuracy-weighted average of all ten probabilities, not a simple "
-                "majority vote."
-            )
-        with right:
-            chart = (detail.set_index("Algorithm")[["P(disease) %"]]
-                     .sort_values("P(disease) %"))
-            st.bar_chart(chart, height=330)
-
-        st.subheader("How each algorithm voted")
-        st.caption(
-            "**Surety %** is that model's confidence in *this* case. "
-            "**Accuracy %** is its cross-validated accuracy on the training split. "
-            "**Weight %** is its share of the final answer — models that beat the "
-            f"majority-class baseline ({info['majority_rate']:.1%}) by more, count for more."
-        )
         show = detail.copy()
         show["Vote"] = np.where(show["Prediction"] == 1,
                                 spec["positive_label"], spec["negative_label"])
-        show = show[["Algorithm", "Family", "Vote", "Surety %", "P(disease) %",
-                     "Accuracy %", "Weight %"]]
-        st.dataframe(
-            show.style
-                .format({"Surety %": "{:.1f}", "P(disease) %": "{:.1f}",
-                         "Accuracy %": "{:.1f}", "Weight %": "{:.1f}"})
-                .background_gradient(subset=["Weight %"], cmap="Blues")
-                .background_gradient(subset=["P(disease) %"], cmap="Reds"),
-            use_container_width=True, hide_index=True)
+
+        st.markdown(ui.verdict(
+            verdict, p_disease, is_positive,
+            chips=[f"{votes_positive}/{n_models} models agree"
+                   if is_positive else
+                   f"{n_models - votes_positive}/{n_models} models agree",
+                   f"combined surety {confidence:.0%}",
+                   f"baseline {info['majority_rate']:.0%}"],
+            caption="The accuracy-weighted average of all ten probabilities — "
+                    "not a simple majority vote."), unsafe_allow_html=True)
+
+        st.markdown("#### How each algorithm voted")
+        st.markdown(
+            ui.votes(show.to_dict("records"),
+                     spec["positive_label"], spec["negative_label"]),
+            unsafe_allow_html=True)
+
+        with st.expander("Full numbers"):
+            st.caption(
+                "**Surety %** is that model's confidence in *this* case. "
+                "**Accuracy %** is its cross-validated accuracy on the training "
+                "split. **Weight %** is its share of the final answer — models "
+                f"beating the majority-class baseline ({info['majority_rate']:.1%}) "
+                "by more count for more.")
+            st.dataframe(
+                show[["Algorithm", "Family", "Vote", "Surety %", "P(disease) %",
+                      "Accuracy %", "Weight %"]].style
+                    .format({"Surety %": "{:.1f}", "P(disease) %": "{:.1f}",
+                             "Accuracy %": "{:.1f}", "Weight %": "{:.1f}"})
+                    .background_gradient(subset=["Weight %"], cmap="Blues")
+                    .background_gradient(subset=["P(disease) %"], cmap="Reds"),
+                use_container_width=True, hide_index=True)
 
         with st.expander("What each algorithm does"):
             for _, row in detail.iterrows():
@@ -187,8 +184,9 @@ elif mode == "Medical imaging (10-model ensemble)":
         format_func=lambda k: f"{config.IMAGE_TASKS[k]['icon']} {config.IMAGE_TASKS[k]['name']}")
     task = config.IMAGE_TASKS[task_key]
 
-    st.title(f"{task['icon']} {task['name']}")
-    st.caption(task["blurb"])
+    st.markdown(
+        ui.hero(f"{task['icon']}  {task['name']}", task["blurb"],
+                "CNN embedding → 10 algorithms"), unsafe_allow_html=True)
     st.caption(
         "A fine-tuned EfficientNetB0 turns the scan into a 1280-dimensional "
         "embedding, then the **same ten algorithms** used for the clinical data "
@@ -215,10 +213,11 @@ elif mode == "Medical imaging (10-model ensemble)":
             )
         st.stop()
 
-    c1, c2, c3 = st.columns(3)
-    c1.metric("Algorithms", len(ens.members))
-    c2.metric("Classes", len(ens.classes))
-    c3.metric("Backbone", ens.backbone_name)
+    st.markdown(ui.stats([
+        ("Algorithms", len(ens.members), "weighted vote"),
+        ("Classes", len(ens.classes), " · ".join(ens.classes)[:34]),
+        ("Backbone", ens.backbone_name, "fine-tuned, then frozen"),
+    ]), unsafe_allow_html=True)
 
     up = st.file_uploader("Upload a scan", type=["jpg", "jpeg", "png"])
     if up is not None:
@@ -232,35 +231,39 @@ elif mode == "Medical imaging (10-model ensemble)":
         verdict = ens.classes[top]
         votes = detail["Vote"].value_counts()
 
+        healthy = any(w in verdict.lower() for w in ("no_tumor", "no tumour",
+                                                     "normal", "healthy"))
         left, right = st.columns([2, 3])
         with left:
             st.image(img, caption="Uploaded scan", use_container_width=True)
-
         with right:
-            st.subheader("Final weighted verdict")
-            healthy = any(w in verdict.lower() for w in ("no_tumor", "no tumour",
-                                                         "normal", "healthy"))
-            (st.success if healthy else st.error)(f"### {verdict}")
-            st.metric("Weighted probability", f"{probs[top]:.1%}")
-            st.progress(float(np.clip(probs[top], 0, 1)))
-            st.metric("Model agreement",
-                      f"{int(votes.get(verdict, 0))}/{len(detail)} agree")
+            st.markdown(ui.verdict(
+                verdict.replace("_", " ").title(), float(probs[top]),
+                positive=not healthy,
+                chips=[f"{int(votes.get(verdict, 0))}/{len(detail)} models agree",
+                       f"{len(ens.classes)}-way classification"],
+                caption="Weighted across all ten algorithms."),
+                unsafe_allow_html=True)
             st.bar_chart(
-                pd.DataFrame({"class": ens.classes, "probability": probs})
-                .set_index("class"), height=240)
+                pd.DataFrame({"class": [c.replace("_", " ") for c in ens.classes],
+                              "probability": probs}).set_index("class"),
+                height=230)
 
-        st.subheader("How each algorithm voted")
-        st.caption(
-            "**Surety %** is that model's confidence in this scan. "
-            "**Accuracy %** is its cross-validated accuracy during training. "
-            "**Weight %** is its share of the final answer."
-        )
-        st.dataframe(
-            detail.style
-                  .format({"Surety %": "{:.1f}", "Accuracy %": "{:.1f}",
-                           "Weight %": "{:.1f}"})
-                  .background_gradient(subset=["Weight %"], cmap="Blues"),
-            use_container_width=True, hide_index=True)
+        st.markdown("#### How each algorithm voted")
+        st.markdown(ui.votes(detail.to_dict("records"), "", "",
+                             agree_with=verdict), unsafe_allow_html=True)
+
+        with st.expander("Full numbers"):
+            st.caption(
+                "**Surety %** is that model's confidence in this scan. "
+                "**Accuracy %** is its cross-validated accuracy during training. "
+                "**Weight %** is its share of the final answer.")
+            st.dataframe(
+                detail.style
+                      .format({"Surety %": "{:.1f}", "Accuracy %": "{:.1f}",
+                               "Weight %": "{:.1f}"})
+                      .background_gradient(subset=["Weight %"], cmap="Blues"),
+                use_container_width=True, hide_index=True)
     else:
         st.info("Upload a scan to run all ten algorithms on it.")
         with st.expander("Algorithm weights for this task"):
