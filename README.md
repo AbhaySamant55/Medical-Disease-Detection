@@ -10,8 +10,7 @@ an embedding, and the ten classifiers vote on that.
 
 ![The dashboard](assets/ui-dashboard.png)
 
-> ⚠️ **Not a medical device.** A student project on small public research
-> datasets. It cannot diagnose anyone and must never be used to.
+
 
 ---
 
